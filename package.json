@@ -2,10 +2,12 @@
   "name": "vue-layout-board",
   "version": "0.1.0",
   "private": false,
+  "description": "A Vue.js component for creating a layout board",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name vue-layout-board ./src/index.js",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "release": "npm version patch && npm publish"
   },
   "dependencies": {
     "core-js": "^3.8.3",
