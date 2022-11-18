@@ -1,39 +1,31 @@
 <template>
-	<div
-		class="layout-board"
-		:class="{
-			'relative flex h-full min-h-full w-full flex-col':
-				scalable && !autoHeight,
-			'relative flex w-full flex-col': scalable && autoHeight,
-			'items-center': (align == 'center' || autoHeight) && scalable,
-			'items-start': align == 'left' && scalable && !autoHeight,
-			'items-end': align == 'right' && scalable && !autoHeight,
-			'justify-center': valign == 'center' && scalable && !autoHeight,
-			'justify-start': (valign == 'top' || autoHeight) && scalable,
-			'justify-end': valign == 'bottom' && scalable && !autoHeight,
-			'overflow-hidden': overflowHidden && scalable,
-		}"
-		:style="
-			size != 'cover' && size != 'fit-height' && scalable && !autoHeight
-				? `min-height: ${height * scale}px; --layoutheight: ${
-						height * scale
-				  }px;`
+	<div class="layout-board" :class="{
+		'relative flex h-full min-h-full w-full flex-col':
+			scalable && !autoHeight,
+		'relative flex w-full flex-col': scalable && autoHeight,
+		'items-center': (align == 'center' || autoHeight) && scalable,
+		'items-start': align == 'left' && scalable && !autoHeight,
+		'items-end': align == 'right' && scalable && !autoHeight,
+		'justify-center': valign == 'center' && scalable && !autoHeight,
+		'justify-start': (valign == 'top' || autoHeight) && scalable,
+		'justify-end': valign == 'bottom' && scalable && !autoHeight,
+		'overflow-hidden': overflowHidden && scalable,
+	}" :style="
+	size != 'cover' && size != 'fit-height' && scalable && !autoHeight
+		? `min-height: ${height * scale}px; --layoutheight: ${
+				height * scale
+		  }px;`
+		: scalable && autoHeight
+		? `min-height: ${contentHeight}px; height: ${contentHeight}px; --layoutheight: ${contentHeight}px;`
+		: ``
+">
+		<div class="inner-board" :class="{ relative: scalable }" :style="
+			scalable && !autoHeight
+				? `width: ${width}px; min-width: ${width}px; height: ${height}px; min-height: ${height}px;transform: scale(${scale});transform-origin: ${align} ${valign};`
 				: scalable && autoHeight
-				? `min-height: ${contentHeight}px; height: ${contentHeight}px; --layoutheight: ${contentHeight}px;`
-				: ``
-		"
-	>
-		<div
-			class="inner-board"
-			:class="{ relative: scalable }"
-			:style="
-				scalable && !autoHeight
-					? `width: ${width}px; min-width: ${width}px; height: ${height}px; min-height: ${height}px;transform: scale(${scale});transform-origin: ${align} ${valign};`
-					: scalable && autoHeight
-					? `width: ${width}px; min-width: ${width}px;transform: scale(${scale});transform-origin: center top;`
-					: ``
-			"
-		>
+		? `width: ${width}px; min-width: ${width}px;transform: scale(${scale});transform-origin: center top;`
+		: ``
+		">
 			<slot></slot>
 		</div>
 	</div>
@@ -93,21 +85,17 @@ export default {
 			this.$emit("resize", value);
 		},
 	},
-	created() {},
+	created() { },
 	mounted() {
-		if (process.browser) {
-			window.addEventListener("resize", this.handleResize);
-			this.handleResize();
+		window.addEventListener("resize", this.handleResize);
+		this.handleResize();
 
-			setTimeout(() => {
-				this.handleResize();
-			}, 100);
-		}
+		setTimeout(() => {
+			this.handleResize();
+		}, 100);
 	},
 	destroyed() {
-		if (process.browser) {
-			window.removeEventListener("resize", this.handleResize);
-		}
+		window.removeEventListener("resize", this.handleResize);
 	},
 	methods: {
 		handleResize() {
@@ -175,7 +163,7 @@ export default {
 					if (
 						boardScale ==
 						this.$el.parentNode.clientWidth /
-							this.$el.parentNode.clientHeight
+						this.$el.parentNode.clientHeight
 					)
 						return;
 					this.handleResize();

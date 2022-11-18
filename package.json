@@ -47,5 +47,6 @@
     "last 2 versions",
     "not dead"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "main": "dist/vue-layout-board.umd.js"
 }
